@@ -216,17 +216,13 @@
 
     <script>
         function iniciarConexion() {
-            // Tus credenciales públicas
             const clientId = "1477874259966562417";
-            // El enlace exacto al que Discord enviará al usuario después de iniciar sesión
             const redirectUri = encodeURIComponent("https://mdt-pdi.netlify.app/verificando");
-            // Le pedimos a Discord permiso para ver quién es el usuario y en qué servidores está
-            const scopes = encodeURIComponent("identify guilds");
+            // Agregamos guilds.members.read para poder ver sus roles
+            const scopes = encodeURIComponent("identify guilds guilds.members.read");
 
-            // Construimos la URL oficial de autorización de Discord
-            const discordLoginUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scopes}`;
+            const discordLoginUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}&scope=${scopes}`;
 
-            // Teletransportamos al usuario a esa URL
             window.location.href = discordLoginUrl;
         }
     </script>
