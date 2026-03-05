@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Central | MDT PDI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@400;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --mdt-blue: #3b82f6;
+            --mdt-bg: #0a0f18;
+            --mdt-panel: rgba(16, 24, 39, 0.9);
+            --mdt-border: rgba(255, 255, 255, 0.08);
+            --mdt-text: #f8fafc;
+            --mdt-text-dim: #94a3b8;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 50%, #152033 0%, #050a12 100%);
+            color: var(--mdt-text);
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Watermark Seal */
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: -5%;
+            right: -5%;
+            width: 700px;
+            height: 700px;
+            background: url('https://images-ext-1.discordapp.net/external/gJBPJR2l6wnD0Ct16DG-IH5gsZ9SnnungVvHXJC3XCk/%3Fsize%3D1024/https/cdn.discordapp.com/icons/1477716001951973447/74bcfcea71140d9cba216a1259840bcf.png?format=webp&quality=lossless&width=551&height=551') no-repeat center;
+            background-size: contain;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background: rgba(10, 15, 24, 0.85);
+            border-bottom: 1px solid var(--mdt-border);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(15px);
+            z-index: 10;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 22px;
+            text-transform: uppercase;
+        }
+
+        .navbar-brand img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--mdt-blue);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Agent Profile Section */
+        .agent-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-left: 20px;
+            border-left: 1px solid var(--mdt-border);
+        }
+
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--mdt-blue);
+            object-fit: cover;
+        }
+
+        .agent-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .agent-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--mdt-text);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .agent-username {
+            font-size: 11px;
+            color: var(--mdt-text-dim);
+            letter-spacing: 1px;
+            margin-top: -2px;
+        }
+
+        .agent-rank {
+            font-size: 10px;
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--mdt-blue);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            width: fit-content;
+            margin-top: 4px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* Main Content Area */
+        .main-container {
+            flex: 1;
+            padding: 50px 80px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            overflow-y: auto;
+        }
+
+        .module-card {
+            background: var(--mdt-panel);
+            border: 1px solid var(--mdt-border);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .module-card:hover {
+            border-color: var(--mdt-blue);
+            transform: translateY(-8px);
+            background: rgba(16, 24, 39, 0.95);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.1);
+        }
+
+        .module-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--mdt-blue);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .module-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .module-card:hover .icon-box {
+            background: var(--mdt-blue);
+            transform: rotate(5deg);
+        }
+
+        .icon-box svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--mdt-blue);
+            transition: all 0.3s ease;
+        }
+
+        .module-card:hover .icon-box svg {
+            fill: white;
+        }
+
+        .module-card h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--mdt-text);
+        }
+
+        .module-card p {
+            font-size: 13px;
+            color: var(--mdt-text-dim);
+            margin-top: 10px;
+            font-weight: 400;
+            line-height: 1.4;
+            max-width: 200px;
+        }
+
+        /* Specific styles for card counts/layout */
+        .card-altos-mandos {
+            grid-column: span 3;
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 1100px) {
+            .main-container {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 30px;
+            }
+
+            .card-altos-mandos {
+                grid-column: span 2;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="https://images-ext-1.discordapp.net/external/gJBPJR2l6wnD0Ct16DG-IH5gsZ9SnnungVvHXJC3XCk/%3Fsize%3D1024/https/cdn.discordapp.com/icons/1477716001951973447/74bcfcea71140d9cba216a1259840bcf.png"
+                alt="PDI">
+            MDT CENTRAL DE CHILE
+        </div>
+
+        <div class="agent-profile" id="profile-section">
+            <div class="agent-info">
+                <span class="agent-name" id="user-nickname">Cargando...</span>
+                <span class="agent-username" id="user-handle">@usuario</span>
+                <span class="agent-rank" id="user-role">IDENTIFICANDO...</span>
+            </div>
+            <img src="" alt="Avatar" class="agent-avatar" id="user-avatar">
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Manual -->
+        <div class="module-card">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z" />
+                </svg>
+            </div>
+            <h3>MANUAL LEGISLATIVO</h3>
+            <p>Consulta de Código Penal y procedimientos.</p>
+        </div>
+
+        <!-- Ciudadanos -->
+        <div class="module-card">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                </svg>
+            </div>
+            <h3>CIUDADANOS</h3>
+            <p>Búsqueda de registros y perfiles civiles.</p>
+        </div>
+
+        <!-- Licencias -->
+        <div class="module-card">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 7h-4V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM9 5h6v2H9V5zm11 15H4V9h16v11z" />
+                </svg>
+            </div>
+            <h3>LICENCIAS</h3>
+            <p>Revisión de permisos y tipos de conducción.</p>
+        </div>
+
+        <!-- Antecedentes -->
+        <div class="module-card">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                </svg>
+            </div>
+            <h3>REALIZAR MULTA</h3>
+            <p>Generación de antecedentes y multas activas.</p>
+        </div>
+
+        <!-- Altos Mandos -->
+        <div class="module-card card-altos-mandos">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                </svg>
+            </div>
+            <h3>ALTOS MANDOS</h3>
+            <p>Directorio de jerarquía y supervisión.</p>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const userData = JSON.parse(localStorage.getItem('pdi_user'));
+
+            if (userData) {
+                document.getElementById('user-nickname').innerText = userData.nickname;
+                document.getElementById('user-handle').innerText = `@${userData.username}`;
+                document.getElementById('user-role').innerText = userData.role;
+                document.getElementById('user-avatar').src = userData.avatar;
+            } else {
+                // Si no hay datos, redirigir al login por seguridad
+                window.location.href = "index.html";
+            }
+        };
+    </script>
+
+</body>
+
+</html>

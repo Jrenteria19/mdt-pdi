@@ -5,31 +5,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificando Credenciales | MDT PDI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap"
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@400;800&display=swap"
         rel="stylesheet">
     <style>
+        :root {
+            --mdt-blue: #3b82f6;
+            --mdt-bg: #0a0f18;
+            --mdt-panel: rgba(16, 24, 39, 0.85);
+            --mdt-border: rgba(255, 255, 255, 0.08);
+            --mdt-text: #f8fafc;
+            --mdt-text-dim: #94a3b8;
+            --mdt-error: #ef4444;
+            --mdt-success: #22c55e;
+        }
+
         body {
-            background-color: #10141d;
-            color: #00f2fe;
-            font-family: 'Share Tech Mono', monospace;
+            background: radial-gradient(circle at 50% 50%, #152033 0%, #050a12 100%);
+            color: var(--mdt-text);
+            font-family: 'Rajdhani', 'Inter', sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Watermark Seal */
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: -5%;
+            right: -5%;
+            width: 600px;
+            height: 600px;
+            background: url('https://images-ext-1.discordapp.net/external/gJBPJR2l6wnD0Ct16DG-IH5gsZ9SnnungVvHXJC3XCk/%3Fsize%3D1024/https/cdn.discordapp.com/icons/1477716001951973447/74bcfcea71140d9cba216a1259840bcf.png?format=webp&quality=lossless&width=551&height=551') no-repeat center;
+            background-size: contain;
+            opacity: 0.05;
+            filter: grayscale(1);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .login-panel {
+            background: var(--mdt-panel);
+            border: 1px solid var(--mdt-border);
+            backdrop-filter: blur(20px);
+            padding: 60px 40px;
+            border-radius: 16px;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
             text-align: center;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+        }
+
+        .login-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--mdt-blue), transparent);
         }
 
         .loader {
-            border: 4px solid rgba(0, 242, 254, 0.2);
-            border-top: 4px solid #00f2fe;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top: 3px solid var(--mdt-blue);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-            box-shadow: 0 0 15px #00f2fe;
+            margin: 0 auto 30px auto;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
 
         @keyframes spin {
@@ -44,25 +97,73 @@
 
         #mensaje {
             font-size: 18px;
-            letter-spacing: 2px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            line-height: 1.5;
+            text-transform: uppercase;
         }
 
-        .error {
-            color: #ff3b3b;
-            border: 1px solid #ff3b3b;
+        .error-container {
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.05);
             padding: 20px;
-            background: rgba(255, 59, 59, 0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .error-text {
+            color: var(--mdt-error);
+            font-weight: 700;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--mdt-text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 1px solid var(--mdt-border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--mdt-text);
+        }
+
+        .status-header {
+            font-size: 12px;
+            color: var(--mdt-blue);
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            font-weight: 700;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="loader" id="spinner"></div>
-    <div id="mensaje">Conectando con la base de datos central... Extrayendo placa...</div>
+    <div class="login-panel">
+        <div class="status-header">VERIFICACIÓN DE CREDENCIALES</div>
+
+        <div class="loader" id="spinner"></div>
+
+        <div id="mensaje">
+            Conectando con la base de datos central... <br>
+            <span style="font-size: 14px; color: var(--mdt-text-dim); font-weight: 400;">Esperando respuesta del
+                servidor...</span>
+        </div>
+
+        <div id="error-box" style="display: none;">
+            <a href="index.html" class="back-link">[ VOLVER AL INICIO ]</a>
+        </div>
+    </div>
 
     <script>
-        // 1. Configuraciones
         const ID_SERVIDOR = "1477716001951973447";
         const ID_ROL_PDI = "1477716001989595176";
 
@@ -71,53 +172,70 @@
             const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 
             if (!accessToken) {
-                mostrarError("ACCESO DENEGADO: No se recibió autorización de Discord.");
+                mostrarError("AUTORIZACIÓN CANCELADA: No se recibió respuesta de Discord.");
                 return;
             }
 
-            document.getElementById('mensaje').innerText = "Verificando credenciales y roles...";
-
             try {
-                // 2. Preguntamos a Discord por los datos de este usuario en tu servidor
                 const respuesta = await fetch(`https://discord.com/api/users/@me/guilds/${ID_SERVIDOR}/member`, {
                     headers: { authorization: `${tokenType} ${accessToken}` }
                 });
 
                 if (respuesta.status === 404) {
-                    mostrarError("ACCESO DENEGADO: No eres miembro del servidor oficial de ChileVerse RP.");
+                    mostrarError("ACCESO DENEGADO: No se encuentra registro de ingreso en el servidor oficial de Chile.");
                     return;
                 }
 
                 if (!respuesta.ok) {
-                    throw new Error("Error de conexión con la API.");
+                    throw new Error("ERROR DE SISTEMA: Fallo en la conexión con el servidor central de la PDI.");
                 }
 
                 const datosMiembro = await respuesta.json();
 
-                // 3. Verificamos si tiene el rol de la PDI
-                if (datosMiembro.roles.includes(ID_ROL_PDI)) {
-                    document.getElementById('spinner').style.borderTopColor = "#00ff00";
-                    document.getElementById('mensaje').style.color = "#00ff00";
-                    document.getElementById('mensaje').innerText = "¡AUTORIZACIÓN CONFIRMADA! Entrando a la MDT...";
+                // --- CAPTURA DE DATOS PARA EL PANEL ---
+                // Buscamos el rol más alto (puedes ajustar esta lógica si tienes una jerarquía específica)
+                // Por ahora tomaremos el apodo o el nombre de usuario
+                const userData = {
+                    avatar: datosMiembro.user.avatar
+                        ? `https://cdn.discordapp.com/avatars/${datosMiembro.user.id}/${datosMiembro.user.avatar}.png`
+                        : "https://cdn.discordapp.com/embed/avatars/0.png",
+                    username: datosMiembro.user.username,
+                    nickname: datosMiembro.nick || datosMiembro.user.global_name || datosMiembro.user.username,
+                    role: "AGENTE PDI" // Valor por defecto
+                };
 
-                    // Aquí lo mandaremos al panel real (Lo crearemos en el próximo paso)
+                // Si queremos el nombre del rol, necesitaríamos otro fetch o una lista mapeada. 
+                // Por simplicidad, usaremos "AGENTE PDI" o podrías mapear ID_ROL_PDI
+                if (datosMiembro.roles.includes(ID_ROL_PDI)) {
+                    userData.role = "AGENTE PDI";
+
+                    // Guardamos en localStorage para el panel
+                    localStorage.setItem('pdi_user', JSON.stringify(userData));
+
+                    document.getElementById('spinner').style.borderTopColor = "#22c55e";
+                    document.getElementById('spinner').style.boxShadow = "0 0 20px rgba(34, 197, 94, 0.3)";
+                    const msg = document.getElementById('mensaje');
+                    msg.style.color = "#22c55e";
+                    msg.innerHTML = "¡AUTORIZACIÓN EXITOSA!<br><span style='font-size: 14px; color: #f8fafc;'>Iniciando sesión en el sistema central...</span>";
+
                     setTimeout(() => {
                         window.location.href = "panel.html";
-                    }, 2000);
+                    }, 2500);
                 } else {
-                    mostrarError("ACCESO DENEGADO: Tu perfil no cuenta con la placa oficial de la PDI (Rol no encontrado).");
+                    mostrarError("ACCESO DENEGADO: Su perfil no cuenta con el rango de Agente o Placa Institucional activa.");
                 }
 
             } catch (error) {
-                mostrarError("ACCESO DENEGADO: " + error.message);
+                mostrarError("ERROR DE SISTEMA: Fallo en la conexión con el servidor central de la PDI.");
             }
         };
 
         function mostrarError(texto) {
             document.getElementById('spinner').style.display = 'none';
-            const msj = document.getElementById('mensaje');
-            msj.className = 'error';
-            msj.innerHTML = texto + "<br><br><a href='index.html' style='color:#ff3b3b;'>[ Volver al Inicio ]</a>";
+            const msg = document.getElementById('mensaje');
+            msg.className = 'error-text';
+            msg.innerHTML = texto;
+            document.getElementById('error-box').style.display = 'block';
         }
     </script>
 </body>
