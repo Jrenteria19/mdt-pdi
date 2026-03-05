@@ -1,0 +1,2 @@
+ID del cliente = 1477874259966562417
+Clave secreta del cliente = puPJNyw7rzIm_w6E3CQkkBu6Sq7Pa03M

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDT Central | PDI Chile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- Paleta de Colores Profesional ---
+           Fondo: #10141d (Azul Marino Profundo)
+           Acento Eléctrico: #00f2fe (Cian Brillante)
+           Texto Principal: #ffffff (Blanco Puro)
+           Texto Secundario: #a1a1aa (Gris Claro)
+           Alerta: #ff3b3b (Rojo Vibrante)
+        */
+
+        body {
+            background-color: #10141d;
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* === FONDO ANIMADO (Cuadrícula Pulsante) === */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center;
+            animation: pulsarGrid 8s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes pulsarGrid {
+            0% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        /* === CONTENEDOR MDT (Caja Principal) === */
+        .mdt-box {
+            border: 3px solid;
+            /* Efecto de borde metalizado/brillante */
+            border-image: linear-gradient(135deg, #00f2fe, #4facfe, #00f2fe) 1;
+            padding: 50px;
+            border-radius: 5px;
+            background: rgba(16, 20, 29, 0.95);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.3);
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            backdrop-filter: blur(5px);
+            /* Desenfoque sutil del fondo animado */
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #00f2fe;
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            font-family: 'Share Tech Mono', monospace;
+            /* Fuente de readout técnico */
+        }
+
+        /* === CAJA DE ADVERTENCIA CRÍTICA === */
+        .warning {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            border: 2px solid #ff3b3b;
+            padding: 18px;
+            margin-bottom: 30px;
+            background: rgba(255, 59, 59, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(255, 59, 59, 0.3), inset 0 0 10px rgba(255, 59, 59, 0.2);
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 35px;
+            color: #a1a1aa;
+        }
+
+        /* === BOTÓN DE IDENTIFICACIÓN POLICIAL (Glow Eléctrico) === */
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2, #4facfe);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s all ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de brillo al pasar el mouse */
+        .discord-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Brillo de neón activo */
+        .discord-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .discord-btn:hover::after {
+            left: 100%;
+        }
+
+        /* === CRÉDITOS Y FOOTER === */
+        .footer-text {
+            margin-top: 35px;
+            font-size: 12px;
+            color: #71717a;
+            line-height: 1.6;
+            font-family: 'Share Tech Mono', monospace;
+            /* Fuente técnica */
+        }
+
+        /* Icono de Discord en blanco (SVG) */
+        .discord-icon {
+            width: 26px;
+            height: 26px;
+            fill: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mdt-box">
+
+        <h1>MDT CENTRAL</h1>
+        <h2>POLICÍA DE INVESTIGACIONES DE CHILE</h2>
+
+        <div class="warning">
+            ⚠️ ALERTA DE SEGURIDAD Nivel 4 ⚠️<br><br>
+            Sistema de Acceso Restringido. Se requiere validación biométrica y de rol activo para continuar.
+        </div>
+
+        <p>Esperando autenticación del agente...</p>
+
+        <button class="discord-btn" onclick="iniciarConexion()">
+            <svg class="discord-icon" viewBox="0 0 127.14 96.36">
+                <path
+                    d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a67.55,67.55,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.14c2.64-27.38-4.51-51.11-19.32-72.15ZM42.68,65.36c-5.22,0-9.49-4.82-9.49-10.74s4.21-10.74,9.49-10.74,9.55,4.84,9.49,10.74C52.17,60.54,47.94,65.36,42.68,65.36Zm41.72,0c-5.22,0-9.49-4.82-9.49-10.74s4.21-10.74,9.49-10.74,9.55,4.84,9.49,10.74C93.9,60.54,89.67,65.36,84.4,65.36Z" />
+            </svg>
+            Autenticar Placa
+        </button>
+
+        <div class="footer-text">
+            Propiedad de Smile © 2026<br>
+            Proceso de verificación Discord OAuth2 habilitado.<br>
+            MDT Version: 3.1.2 // Status: ONLINE
+        </div>
+    </div>
+
+    <script>
+        function iniciarConexion() {
+            // Tus credenciales públicas
+            const clientId = "1477874259966562417";
+            // El enlace exacto al que Discord enviará al usuario después de iniciar sesión
+            const redirectUri = encodeURIComponent("https://mdt-pdi.netlify.app/verificando");
+            // Le pedimos a Discord permiso para ver quién es el usuario y en qué servidores está
+            const scopes = encodeURIComponent("identify guilds");
+
+            // Construimos la URL oficial de autorización de Discord
+            const discordLoginUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scopes}`;
+
+            // Teletransportamos al usuario a esa URL
+            window.location.href = discordLoginUrl;
+        }
+    </script>
+
+</body>
+
+</html>
